@@ -1,5 +1,5 @@
 --
--- Connect to a STOMP broker asking for protocol level 1.0
+-- Connect to a STOMP broker asking for protocol level 1.1
 --
 -- Connect parameter 1:  a socket instance
 --
@@ -7,7 +7,7 @@ socket = .netconn~open(.nil)
 --
 -- Connect parameter 2:  a connect headers instance
 --
-ch = .headers~connhdr10
+ch = .headers~connhdr11
 --
 -- Connect parameter 3:  a directory instance for additional connect
 -- parameters.
@@ -26,7 +26,6 @@ say "session:" sc~session
 say "server:" sc~server
 say "protocol:" sc~protocol
 say
---
 sc~disconnect
 --
 say "start close"
