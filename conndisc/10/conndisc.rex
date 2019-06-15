@@ -29,8 +29,5 @@ say
 --
 sc~disconnect
 --
-say "start close"
-retc = SockClose(socket)
-say "close return code:" retc
 
 ::requires "../../base.rex"
