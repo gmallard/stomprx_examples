@@ -18,7 +18,21 @@
 asock = .netconn~open(.nil)
 
 -- Get CONNECT headers
-ch = .headers~connhdr12
+stp = value("STOMP_PROTOCOL", "", .stc~env)
+select
+    when stp == .stc~SPL_10 then do
+        ch = .headers~connhdr10
+    end
+    when stp == .stc~SPL_11 then do
+        ch = .headers~connhdr11
+    end
+    when stp == .stc~SPL_12 then do
+        ch = .headers~connhdr12
+    end
+    otherwise do
+        ch = .headers~connhdr12
+    end
+end
 
 -- Empty options directory
 cod = .directory~new
@@ -37,7 +51,7 @@ t = value("STOMP_NMSGS", "", .stc~env)
 nmsgs = 1
 if t <> "" then nmsgs = t
 t = value("STOMP_DEST", "", .stc~env)
-if t = "" then dest = "/queue/rexx.send"
+if t = "" then dest = "/queue/rexx.send.receive"
 else dest = t
 say "NMSGS:" nmsgs
 say "DEST:" dest
