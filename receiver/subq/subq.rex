@@ -46,6 +46,8 @@ if sc~connframe~command <> .stc~CONNECTED then do
     exit
 end
 --
+say "Protocol Level:" sc~protocol
+--
 startmsg = 1
 t = value("STOMP_NMSGS", "", .stc~env)
 nmsgs = 1

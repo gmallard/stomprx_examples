@@ -46,6 +46,8 @@ if sc~connframe~command <> .stc~CONNECTED then do
     exit
 end
 --
+say "Protocol Level:" sc~protocol
+--
 startmsg = 1
 t = value("STOMP_NMSGS", "", .stc~env)
 nmsgs = 1
@@ -61,6 +63,12 @@ sh = .headers~new
 t = .header~new(.stc~HK_DESTINATION, dest)
 sh~add(t)
 t = .header~new(.stc~HK_CONTENT_TYPE, "text/plain; charset=UTF-8")
+sh~add(t)
+t = .header~new("K:A", "V:A")
+sh~add(t)
+t = .header~new("K\B", "V\B")
+sh~add(t)
+t = .header~new("K\C:C", "V:C\C")
 sh~add(t)
 
 -- To make messages somewhat variable
