@@ -2,8 +2,8 @@
 
 ## Overview
 
-A set of example programs that use the _stomprx_ STOMP
-client package.
+A set of example programs that use the [_stomprx_ STOMP
+client package](https://github.com/gmallard/stomprx).
 
 ## conndisc directory
 
