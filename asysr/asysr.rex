@@ -55,7 +55,7 @@ exit
     cod = .directory~new
 
     -- Get a STOMPRX connection
-    sc = .connection~new(asock, ch, cod)
+    sc = .stomprxconn~new(asock, ch, cod)
 
     -- Check for a good CONNECT
     if sc~connframe~command <> .stc~CONNECTED then do

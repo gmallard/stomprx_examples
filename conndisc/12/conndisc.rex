@@ -16,7 +16,7 @@ cod = .directory~new
 --
 -- Get a STOMP connection
 --
-sc = .connection~new(socket, ch, cod)
+sc = .stomprxconn~new(socket, ch, cod)
 --
 -- Display CONNECT results
 --
