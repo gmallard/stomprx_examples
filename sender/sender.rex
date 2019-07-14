@@ -46,7 +46,7 @@ if sc~connframe~command <> .stc~CONNECTED then do
     exit
 end
 --
-say "Protocol Level:" sc~protocol
+say time("L") "Protocol Level:" sc~protocol
 --
 startmsg = 1
 t = value("STOMP_NMSGS", "", .stc~env)
@@ -55,8 +55,12 @@ if t <> "" then nmsgs = t
 t = value("STOMP_DEST", "", .stc~env)
 if t = "" then dest = "/queue/rexx.send.receive"
 else dest = t
-say "NMSGS:" nmsgs
-say "DEST:" dest
+say time("L") "NMSGS:" nmsgs
+say time("L") "DEST:" dest
+
+sendcl = .true
+t = value("STOMP_NOCL", "", .stc~env)
+if t <> "" then sendcl = .false
 
 -- Pattern headers for ~send
 sh = .headers~new
@@ -75,7 +79,7 @@ sh~add(t)
 rpart = "12345678901234567890"
 
 -- Start SENDs
-say "send demo starts"
+say time("L") "send demo starts"
 mc = 0
 do i = startmsg to nmsgs
     mc = mc + 1                         -- Bump message count
@@ -83,12 +87,15 @@ do i = startmsg to nmsgs
 
     -- Create a message
     om = "Message" i rp
-    say "send test message->" "Count:" i "Length:" om~length "Message:" om
+    say time("L") "send test message->" "Count:" i "Length:" om~length "Message:" om
 
     -- Clone pattern headers and update the clone
     useh = sh~clone -- clone pattern
-    t = .header~new(.stc~HK_CONTENT_LENGTH, om~length)
-    useh~add(t)    
+    -- useh~pp("Right after clone:")
+    if sendcl then do
+        t = .header~new(.stc~HK_CONTENT_LENGTH, om~length)
+        useh~add(t)
+    end
     t = .header~new("srx_mid", mc) -- A user header
     useh~add(t)    
     -- useh~pp("Send Headers App:")
@@ -96,20 +103,24 @@ do i = startmsg to nmsgs
     -- Call SEND API
     rc = sc~send(useh, om)
     if rc < 0 then do
-        say "send failed:" rc
+        say time("L") "send failed:" rc
         exit
     end
 
     -- Check if broker sent an ERROR frame
     ef = sc~recverr
     if ef <> .nil then do
-        say "error frame received from broker"
+        say time("L") "error frame received from broker"
         ef~pp("ERROR Frame is:")
         sc~disconnect
         exit
     end
-    
+    --
+    call SysSleep 0.0125
 end
+
+-- Show any heartbeat data
+sc~showhbd
 
 -- DISCONNECT and exit
 dh = .headers~new
@@ -120,7 +131,7 @@ rf = sc~recvrcpt(0.3)
 rf~pp("RECEIPT Frame:")
 
 --
-say "send demo done"
+say time("L") "send demo done"
 exit
 
 --

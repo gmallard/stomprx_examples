@@ -63,23 +63,23 @@ sunh1~add(desth)
 id = "recv_12"
 idh = .header~new(.stc~HK_ID, id)
 sunh1~add(idh)
-sunh1~pp("recv12 Headers 12:")
+sunh1~pp("nosubq Headers 12:")
 
 -- SUBSCRIBE to the DESTINATION
 -- This SUBSCRIBE does not specify a subscription specific message queue.
 -- MESSAGE frames will be placed on the system wide message queue.
 -- Call "receive" to get messages from this queue (as shown below).
 src = sc~subscribe(sunh1)
-say "recv12 subscribe rc is" src time("L")
+say time("L") "nosubq subscribe rc is" src
 
 
 -- Start receives
-say "receive demo starts" time("L")
+say time("L") "receive demo starts"
 mc = 0
 do until mc >= nmsgs
 
     -- Call receive API
-    say "Calling receive:" time("L")
+    say time("L") "Calling receive:"
     aframe = sc~receive(0.3)
 
     -- Handle any response
@@ -102,7 +102,7 @@ end
 
 -- UNSUBSCRIBE
 urc = sc~unsubscribe(sunh1)
-say "recv12 unsubscribe rc is" urc time("L")
+say time("L") "nosubq unsubscribe rc is" urc
 
 -- DISCONNECT and exit
 dh = .headers~new

@@ -46,7 +46,7 @@ if sc~connframe~command <> .stc~CONNECTED then do
     exit
 end
 --
-say "Protocol Level:" sc~protocol
+say time("L") "Protocol Level:" sc~protocol
 --
 startmsg = 1
 t = value("STOMP_NMSGS", "", .stc~env)
@@ -55,8 +55,8 @@ if t <> "" then nmsgs = t
 t = value("STOMP_DEST", "", .stc~env)
 if t = "" then dest = "/queue/rexx.send.receive"
 else dest = t
-say "NMSGS:" nmsgs time("L")
-say "DEST:" dest time("L")
+say time("L") "NMSGS:" nmsgs time("L")
+say time("L") "DEST:" dest time("L")
 
 --
 sunh1 = .headers~new
@@ -65,7 +65,7 @@ sunh1~add(desth)
 id = "recv_12"
 idh = .header~new(.stc~HK_ID, id)
 sunh1~add(idh)
-sunh1~pp("recv12 Headers 12:")
+sunh1~pp("subq Headers 12:")
 
 -- Subscription specific queue
 subq = .queue~new
@@ -75,16 +75,16 @@ subq = .queue~new
 -- MESSAGE frames will be placed on this message queue.
 -- Call "pull" to get messages from this queue (as shown below).
 src = sc~subscribe(sunh1, subq)
-say "recv12 subscribe rc is" src time("L")
+say time("L") "subq subscribe rc is" src
 
 
 -- Start receives
-say "receive demo starts" time("L")
+say time("L") "receive demo starts"
 mc = 0
 lc = 0
 do until mc >= nmsgs
     lc = lc + 1
-    say "Start next receive loop" lc time("L")
+    say time("L") "Start next receive loop" lc
 
     -- Handle any errors
     aframe = sc~recverr
@@ -114,7 +114,7 @@ end
 
 -- UNSUBSCRIBE
 urc = sc~unsubscribe(sunh1)
-say "recv12 unsubscribe rc is" urc time("L")
+say time("L") "subq unsubscribe rc is" urc
 
 -- DISCONNECT and exit
 dh = .headers~new
